@@ -51,6 +51,7 @@ namespace GraphicsProject
                 Mesh m = utils.BuildMesh();
                 model = new Model(m.name, m, new Transform());
                 panel2.Invalidate();
+                ResetControls();
                 EnableControls();
             }
             catch (Exception err) {
@@ -131,10 +132,8 @@ namespace GraphicsProject
             panel2.Invalidate();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void ResetControls()
         {
-            if (model == null) return;
-
             numericUpDownRotationX.Value = 0;
             numericUpDownRotationY.Value = 0;
             numericUpDownRotationZ.Value = 0;
@@ -144,6 +143,13 @@ namespace GraphicsProject
             numericUpDownX.Value = 1;
             numericUpDownY.Value = 1;
             numericUpDownZ.Value = 1;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (model == null) return;
+
+            ResetControls();
 
             ((Model)model).transform.Reset();
             panel2.Invalidate();

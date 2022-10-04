@@ -82,8 +82,7 @@ namespace GraphicsProject
             {
 
                 PointF[] points = face.vertices
-                    .Select(vertex => transform * vertex)
-                    .Select(vertex => new PointF(Rescale(vertex.x) + x, (-Rescale(vertex.y) + y)))
+                    .Select(vertex => new PointF(Rescale((transform * vertex).x) + x, (-Rescale((transform * vertex).y) + y)))
                     .ToArray();
 
                 //Console.WriteLine(String.Join(" ", points));

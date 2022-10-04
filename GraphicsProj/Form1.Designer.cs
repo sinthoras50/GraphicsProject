@@ -31,6 +31,7 @@ namespace GraphicsProject
         {
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
             this.numericUpDownRotationZ = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownRotationY = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownRotationX = new System.Windows.Forms.NumericUpDown();
@@ -44,7 +45,6 @@ namespace GraphicsProject
             this.numericUpDownZ = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownX = new System.Windows.Forms.NumericUpDown();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRotationZ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRotationY)).BeginInit();
@@ -89,6 +89,16 @@ namespace GraphicsProject
             this.panel1.Size = new System.Drawing.Size(296, 814);
             this.panel1.TabIndex = 1;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(57, 63);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(188, 47);
+            this.button2.TabIndex = 15;
+            this.button2.Text = "Reset";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // numericUpDownRotationZ
             // 
@@ -194,12 +204,12 @@ namespace GraphicsProject
             131072});
             this.numericUpDownTranslateZ.Location = new System.Drawing.Point(187, 233);
             this.numericUpDownTranslateZ.Maximum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             0});
             this.numericUpDownTranslateZ.Minimum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             -2147483648});
@@ -219,12 +229,12 @@ namespace GraphicsProject
             131072});
             this.numericUpDownTranslateY.Location = new System.Drawing.Point(122, 233);
             this.numericUpDownTranslateY.Maximum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             0});
             this.numericUpDownTranslateY.Minimum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             -2147483648});
@@ -244,12 +254,12 @@ namespace GraphicsProject
             131072});
             this.numericUpDownTranslateX.Location = new System.Drawing.Point(57, 233);
             this.numericUpDownTranslateX.Maximum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             0});
             this.numericUpDownTranslateX.Minimum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             -2147483648});
@@ -350,16 +360,6 @@ namespace GraphicsProject
             this.panel2.Size = new System.Drawing.Size(814, 814);
             this.panel2.TabIndex = 2;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(58, 63);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(187, 47);
-            this.button2.TabIndex = 15;
-            this.button2.Text = "Reset";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form1
             // 
