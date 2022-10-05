@@ -41,6 +41,8 @@ namespace GraphicsProject
             numericUpDownX.Enabled = true;
             numericUpDownY.Enabled = true;
             numericUpDownZ.Enabled = true;
+            radioButton1.Enabled = true;
+            radioButton2.Enabled = true;
 
         }
 
@@ -154,6 +156,16 @@ namespace GraphicsProject
             ((Model)model).transform.Reset();
             panel2.Invalidate();
 
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButton1.Checked) ((Model)model).transform.mode = Mode.STR;
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButton2.Checked) ((Model)model).transform.mode = Mode.SRT;
         }
     }
 

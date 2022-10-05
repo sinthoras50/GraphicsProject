@@ -13,22 +13,30 @@ namespace GraphicsProject
         public static Func<float, float> Sin = angleR => (float)Math.Sin(angleR);
     }
 
+    public enum Mode
+    { 
+        SRT,
+        STR
+    }
+
     public class Transform
     {
         public Mat4 scale;
         public Mat4 rotation;
         public Mat4 translation;
+        public Mode mode;
 
         public Transform()
         {
             Reset();
+            mode = Mode.STR;
         }
 
         public Mat4 Transformation
         {
             get
             {
-                return scale * rotation * translation;
+                return (mode == Mode.SRT) ? scale * rotation * translation : scale * translation * rotation;
             }
 
         }
