@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GraphicsProject
 {
-    // helper methods for working with float
+    // helper class for working with float
     public static class MathF
     {
         public static Func<float, float> Cos = angleR => (float)Math.Cos(angleR);
@@ -56,7 +56,6 @@ namespace GraphicsProject
             translation = new Mat4((float[,])id.Clone());
         }
 
-        // order of transformations SRT
         public void Scale(float x, float y, float z)
         {
             scale.matrix[0, 0] = x;
@@ -71,10 +70,10 @@ namespace GraphicsProject
                 (
                     new float[,]
                     {
-                        { 1, 0, 0, 0 },
-                        { 0, MathF.Cos(x), MathF.Sin(x), 0 },
+                        { 1, 0,             0,            0 },
+                        { 0, MathF.Cos(x), MathF.Sin(x),  0 },
                         { 0, -MathF.Sin(x), MathF.Cos(x), 0 },
-                        { 0, 0, 0, 1 }
+                        { 0, 0,             0,            1 }
                     }
                 );
 
@@ -83,9 +82,9 @@ namespace GraphicsProject
                     new float[,]
                     {
                         { MathF.Cos(y), 0, -MathF.Sin(y), 0 },
-                        { 0, 1, 0, 0 },
-                        { MathF.Sin(y), 0, MathF.Cos(y), 0 },
-                        { 0, 0, 0, 1 }
+                        { 0,            1,  0,            0 },
+                        { MathF.Sin(y), 0, MathF.Cos(y),  0 },
+                        { 0,            0,  0,            1 }
                     }
                 );
 
@@ -94,9 +93,9 @@ namespace GraphicsProject
                     new float[,]
                     {
                         { MathF.Cos(z), -MathF.Sin(z), 0, 0 },
-                        { MathF.Sin(z), MathF.Cos(z), 0, 0 },
-                        { 0, 0, 1, 0 },
-                        { 0, 0, 0, 1 }
+                        { MathF.Sin(z), MathF.Cos(z),  0, 0 },
+                        { 0,            0,             1, 0 },
+                        { 0,            0,             0, 1 }
                     }
                 );
 

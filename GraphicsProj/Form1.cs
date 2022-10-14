@@ -22,11 +22,13 @@ namespace GraphicsProject
         private readonly Utils utils = Utils.Instance;
         private readonly Canvas canvas;
         private float scalingFactor = 1;
+        private bool linkXY = false;
         private Model? model = null;
         public Form1()
         {
             InitializeComponent();
             canvas = new Canvas(panel2.Width, panel2.Height);
+
             Console.WriteLine($"panel width = {panel2.Width}, panel height = {panel2.Height}");
         }
 
@@ -82,12 +84,23 @@ namespace GraphicsProject
 
         private void numericUpDownX_ValueChanged(object sender, EventArgs e)
         {
+            if (linkXY)
+            {
+                numericUpDownY.Value = numericUpDownX.Value;
+            }
+
+
             ((Model)model).transform.Scale((float)numericUpDownX.Value, (float)numericUpDownY.Value, (float)numericUpDownZ.Value);
             panel2.Invalidate();
         }
 
         private void numericUpDownY_ValueChanged(object sender, EventArgs e)
         {
+            if (linkXY)
+            {
+                numericUpDownX.Value = numericUpDownY.Value;
+            }
+
             ((Model)model).transform.Scale((float)numericUpDownX.Value, (float)numericUpDownY.Value, (float)numericUpDownZ.Value);
             panel2.Invalidate();
         }
@@ -161,11 +174,20 @@ namespace GraphicsProject
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             if (radioButton1.Checked) ((Model)model).transform.mode = Mode.STR;
+            panel2.Invalidate();
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
             if (radioButton2.Checked) ((Model)model).transform.mode = Mode.SRT;
+            panel2.Invalidate();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            ActiveControl = null;
+
+            linkXY = checkBox1.Checked;
         }
     }
 

@@ -47,15 +47,11 @@ namespace GraphicsProject
             }
 
             throw new Exception("File selection cancelled.");
-
-            //return content;
         }
 
         public Mesh BuildMesh()
         {
             string[] content = LoadFile();
-
-            //if (content == null) throw new Exception("Unable to build mesh.");
 
             List<Vec4> vertices = new List<Vec4>();
             List<Face> faces = new List<Face>();
