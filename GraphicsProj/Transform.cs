@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Win32.SafeHandles;
+using System;
+
 
 namespace GraphicsProject
 {
-    // helper class for working with float
-    public static class MathF
-    {
-        public static Func<float, float> Cos = angleR => (float)Math.Cos(angleR);
-        public static Func<float, float> Sin = angleR => (float)Math.Sin(angleR);
-    }
 
     public enum Mode
     { 

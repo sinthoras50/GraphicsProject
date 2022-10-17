@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GraphicsProject
 {
@@ -63,6 +60,15 @@ namespace GraphicsProject
             }
         }
 
+        public Face ApplyTransform(Mat4 transform)
+        {
+            Vec4[] tempVertices = vertices
+                .Select(vertex => new Vec4((transform * vertex).x, (transform * vertex).y, (transform * vertex).z, vertex.w))
+                .ToArray();
+
+            return new Face(tempVertices, indices);
+        }
+
         public Face(Vec4[] vertices, int[] indices)
         {
             this.vertices = vertices;
@@ -90,9 +96,25 @@ namespace GraphicsProject
             this.w = w;
         }
 
+        public float Length
+        {
+            get
+            {
+                return (float)Math.Sqrt(x * x + y * y + z * z);
+            }
+        }
+
+        public Vec4 Normal
+        {
+            get
+            {
+                return new Vec4(x / Length, y / Length, z / Length, w);        
+            }
+        }
+
         public override string ToString()
         {
-            return $"Vec4({x}, {y}, {z}, {z})";
+            return $"Vec4({x}, {y}, {z}, {w})";
         }
 
         public static Vec4 operator +(Vec4 vec1, Vec4 vec2)
