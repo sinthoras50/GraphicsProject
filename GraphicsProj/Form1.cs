@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Net.Http.Headers;
-using System.CodeDom;
+
 
 namespace GraphicsProject
 {
@@ -23,6 +14,7 @@ namespace GraphicsProject
         private readonly Canvas canvas;
         private float scalingFactor = 1;
         private bool linkXY = false;
+        private bool scaleTranslation = false;
         private Model? model = null;
         public Form1()
         {
@@ -34,6 +26,7 @@ namespace GraphicsProject
 
         private void EnableControls()
         {
+            checkBox1.Enabled = true;
             numericUpDownRotationX.Enabled = true;
             numericUpDownRotationY.Enabled = true;
             numericUpDownRotationZ.Enabled = true;
@@ -82,7 +75,7 @@ namespace GraphicsProject
 
         }
 
-        private void numericUpDownX_ValueChanged(object sender, EventArgs e)
+        private void RegisterScaleChange()
         {
             if (linkXY)
             {
@@ -94,57 +87,64 @@ namespace GraphicsProject
             panel2.Invalidate();
         }
 
+        private void numericUpDownX_ValueChanged(object sender, EventArgs e)
+        {
+            RegisterScaleChange();
+        }
+
         private void numericUpDownY_ValueChanged(object sender, EventArgs e)
         {
-            if (linkXY)
-            {
-                numericUpDownX.Value = numericUpDownY.Value;
-            }
-
-            ((Model)model).transform.Scale((float)numericUpDownX.Value, (float)numericUpDownY.Value, (float)numericUpDownZ.Value);
-            panel2.Invalidate();
+            RegisterScaleChange();
         }
 
         private void numericUpDownZ_ValueChanged(object sender, EventArgs e)
         {
-            ((Model)model).transform.Scale((float)numericUpDownX.Value, (float)numericUpDownY.Value, (float)numericUpDownZ.Value);
+            RegisterScaleChange();
+        }
+        private void RegisterTranslateChange()
+        {
+            float avg = ((float)numericUpDownX.Value + (float)numericUpDownY.Value) / 2;
+            float dx = (scaleTranslation) ? (float)numericUpDownTranslateX.Value / avg : (float)numericUpDownTranslateX.Value;
+            float dy = (scaleTranslation) ? (float)numericUpDownTranslateY.Value / avg : (float)numericUpDownTranslateY.Value;
+            float dz = (scaleTranslation) ? (float)numericUpDownTranslateZ.Value / avg : (float)numericUpDownTranslateZ.Value;
+
+            ((Model)model).transform.Translate(dx, dy, dz);
             panel2.Invalidate();
         }
-
         private void numericUpDownTranslateX_ValueChanged(object sender, EventArgs e)
         {
-            ((Model)model).transform.Translate((float)numericUpDownTranslateX.Value, (float)numericUpDownTranslateY.Value, (float)numericUpDownTranslateZ.Value);
-            panel2.Invalidate();
+            RegisterTranslateChange();
         }
 
         private void numericUpDownTranslateY_ValueChanged(object sender, EventArgs e)
         {
-            ((Model)model).transform.Translate((float)numericUpDownTranslateX.Value, (float)numericUpDownTranslateY.Value, (float)numericUpDownTranslateZ.Value);
-            panel2.Invalidate();
+            RegisterTranslateChange();
         }
 
         private void numericUpDownTranslateZ_ValueChanged(object sender, EventArgs e)
         {
-            ((Model)model).transform.Translate((float)numericUpDownTranslateX.Value, (float)numericUpDownTranslateY.Value, (float)numericUpDownTranslateZ.Value);
+            RegisterTranslateChange();
+        }
+
+        private void RegisterRotationChange()
+        {
+            ((Model)model).transform.Rotate((float)numericUpDownRotationX.Value, (float)numericUpDownRotationY.Value, (float)numericUpDownRotationZ.Value);
             panel2.Invalidate();
         }
 
         private void numericUpDownRotationX_ValueChanged(object sender, EventArgs e)
         {
-            ((Model)model).transform.Rotate((float)numericUpDownRotationX.Value, (float)numericUpDownRotationY.Value, (float)numericUpDownRotationZ.Value);
-            panel2.Invalidate();
+            RegisterRotationChange();
         }
 
         private void numericUpDownRotationY_ValueChanged(object sender, EventArgs e)
         {
-            ((Model)model).transform.Rotate((float)numericUpDownRotationX.Value, (float)numericUpDownRotationY.Value, (float)numericUpDownRotationZ.Value);
-            panel2.Invalidate();
+            RegisterRotationChange();
         }
 
         private void numericUpDownRotationZ_ValueChanged(object sender, EventArgs e)
         {
-            ((Model)model).transform.Rotate((float)numericUpDownRotationX.Value, (float)numericUpDownRotationY.Value, (float)numericUpDownRotationZ.Value);
-            panel2.Invalidate();
+            RegisterRotationChange(); ;
         }
 
         private void ResetControls()
@@ -188,6 +188,39 @@ namespace GraphicsProject
             ActiveControl = null;
 
             linkXY = checkBox1.Checked;
+            numericUpDownY.Enabled = !numericUpDownY.Enabled;
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            ActiveControl = null;
+
+            scaleTranslation = checkBox2.Checked;
+
+            panel2.Invalidate();
+
+        }
+
+        private void RegisterLightningTranslationChange()
+        {
+            canvas.SetLightningPosition((float)numericUpDownLightningX.Value, (float)numericUpDownLightningY.Value, (float)numericUpDownLightningZ.Value);
+
+            panel2.Invalidate();
+        }
+
+        private void numericUpDownLightningX_ValueChanged(object sender, EventArgs e)
+        {
+            RegisterLightningTranslationChange();
+        }
+
+        private void numericUpDownLightningY_ValueChanged(object sender, EventArgs e)
+        {
+            RegisterLightningTranslationChange();
+        }
+
+        private void numericUpDownLightningZ_ValueChanged(object sender, EventArgs e)
+        {
+            RegisterLightningTranslationChange();
         }
     }
 

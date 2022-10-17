@@ -12,11 +12,13 @@ namespace GraphicsProject
     {
         private const float SCALE = 4;
         private readonly float width, height, x, y;
+        private readonly Lightning lightning;
 
         public Canvas(float width, float height)
         {
             this.width = width;
             this.height = height;
+            lightning = Lightning.Instance;
 
             x = width / 2;
             y = height / 2;
@@ -27,6 +29,11 @@ namespace GraphicsProject
         private float Rescale(float x)
         {
             return this.x * x / SCALE;
+        }
+
+        public void SetLightningPosition(float x, float y, float z)
+        {
+            lightning.SetPosition(x, y, z);
         }
 
         public void Paint(Graphics g)
@@ -96,7 +103,10 @@ namespace GraphicsProject
         public void DrawMesh(Mesh mesh, float scalingFactor, Graphics g)
         {
 
-            foreach (Face face in mesh.faces)
+            Face[] faces = mesh.faces.OrderByDescending(face => face.vertices.Average(vertex => vertex.z)).ToArray();
+
+
+            foreach (Face face in faces)
             {
 
                 PointF[] points = face.vertices
@@ -104,6 +114,7 @@ namespace GraphicsProject
                     .ToArray();
 
                 //Console.WriteLine(String.Join(" ", points));
+                Console.WriteLine(face.vertices.Average(vertex => vertex.z));
 
                 if (!CullFace2D(points)) g.DrawPolygon(Pens.Blue, points);
 
@@ -116,24 +127,67 @@ namespace GraphicsProject
         public void DrawMesh(Mesh mesh, Mat4 transform, Graphics g)
         {
 
+            int culled = 0;
+            int drawn = 0;
+
             Image buffer = new Bitmap((int)width, (int)height);
             Graphics gr = Graphics.FromImage(buffer);
 
-            foreach (Face face in mesh.faces)
+            var start = DateTime.Now;
+
+
+            // apply transform to all faces, sort by average z, render from back to front
+            Face[] faces = mesh.faces
+                .Select(face => face.ApplyTransform(transform))
+                .OrderBy(face => face.vertices.Average(vertex => vertex.z)).ToArray();
+
+
+            foreach (Face face in faces)
             {
 
+                //PointF[] points = face.vertices
+                //    .Select(vertex => new PointF(Rescale((transform * vertex).x) + x, (-Rescale((transform * vertex).y) + y)))
+                //    .ToArray();
+
+                // move x, y points to the middle of the screen
                 PointF[] points = face.vertices
-                    .Select(vertex => new PointF(Rescale((transform * vertex).x) + x, (-Rescale((transform * vertex).y) + y)))
+                    .Select(vertex => new PointF(Rescale(vertex.x) + x, -Rescale(vertex.y) + y))
                     .ToArray();
 
                 //Console.WriteLine(String.Join(" ", points));
 
-                if (!CullFace2D(points)) gr.DrawPolygon(Pens.Blue, points);
+                //Console.WriteLine(face.vertices.Average(vertex => vertex.z));
 
+                //Vec4[] tempVertices = face.vertices
+                //    .Select(vertex => new Vec4((transform * vertex).x, (transform * vertex).y, (transform * vertex).z, vertex.w))
+                //    .ToArray();
+
+
+                //Face tempFace = new Face(tempVertices, face.indices);
+
+                if (!CullFace3D(points))
+                {
+
+                    Vec4 color = lightning.GetDiffuseColor(face);
+                    //Vec4 color = lightning.GetDiffuseColor(face, new Vec4(0, 0, 4));
+                    Brush brush = new SolidBrush(Color.FromArgb((int)color.x, (int)color.y, (int)color.z));
+                    gr.FillPolygon(brush, points);
+                    //gr.DrawPolygon(Pens.Blue, points);
+                    drawn++;
+
+                }
+                else culled++;
+                
+            }
+            var end = DateTime.Now - start;
+
+            Console.WriteLine($"execution time = {end}");
+            Console.WriteLine($"culled count = {culled}, drawn count = {drawn}");
 
             gr.Dispose();
             g.DrawImage(buffer, 0, 0);
             buffer.Dispose();
+            
         }
     }
 }

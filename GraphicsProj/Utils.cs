@@ -9,6 +9,14 @@ using System.Windows.Forms;
 
 namespace GraphicsProject
 {
+    // helper class for working with float
+    public static class MathF
+    {
+        public static Func<float, float> Cos = angleR => (float)Math.Cos(angleR);
+        public static Func<float, float> Sin = angleR => (float)Math.Sin(angleR);
+        public static Func<float, float, float> Min = (x, y) => (x < y) ? x : y;
+        public static Func<float, float, float> Max = (x, y) => (x < y) ? y : x;
+    }
     public sealed class Utils
     {
 
@@ -80,6 +88,8 @@ namespace GraphicsProject
                             .ToArray();
 
                         faces.Add(new Face(faceVertices, indices));
+                        //Console.WriteLine($"face vertices {faces.Last().vertices[0]}, {faces.Last().vertices[1]}, {faces.Last().vertices[2]}");
+                        //Console.WriteLine($"surface normal {faces.Last().SurfaceNormal}");
                         break;
 
                 }
