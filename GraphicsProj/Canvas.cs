@@ -144,6 +144,8 @@ namespace GraphicsProject
                     .ToArray();
             }
 
+            Pen pen = new Pen(Color.FromArgb((int)lightning.color[0], (int)lightning.color[1], (int)lightning.color[2]));
+
 
             foreach (Face face in faces)
             {
@@ -164,7 +166,7 @@ namespace GraphicsProject
                     }
                     else
                     {
-                        gr.DrawPolygon(Pens.Blue, points);
+                        gr.DrawPolygon(pen, points);
                     }
 
 
