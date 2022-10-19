@@ -13,8 +13,13 @@ namespace GraphicsProject
     {
         private static readonly Lightning instance = new Lightning();
 
-        public static Vec4 position;
-        public static Vec4 color;
+        public float ka = 0.1f;
+        public float kd = 0.4f;
+        public float ks = 0.6f;
+        public float shininess = 0.5f;
+
+        public Vec4 position;
+        public Vec4 color;
         private Lightning() 
         {
             position = new Vec4(0, 0, 4);
@@ -43,37 +48,35 @@ namespace GraphicsProject
         {
             return MathF.Min(MathF.Max(x, min), max);
         }
-
-        public Vec4 GetDiffuseColor(Face face)
+        public Vec4 GetColor(Face face, Vec4 view)
         {
+            float x = 0, y = 0, z = 0;
+            foreach (Vec4 vec in face.vertices)
+            {
+                x += vec.x;
+                y += vec.y;
+                z += vec.z;
+            }
 
-            Vec4 toLight = (position - face.SurfaceNormal).Normal;
-            Console.WriteLine(toLight);
+            Vec4 centroid = new Vec4(x / 3, y / 3, z / 3, 1);
 
-            float angle = toLight * face.SurfaceNormal.Normal;
-            //Console.WriteLine($"angle = {angle}");
-            angle = Clamp(angle, 0, 1);
-            //angle = Math.Abs(angle);
-            //Console.WriteLine($"angle = {angle}");
+            Vec4 lightDir = (position - centroid).Normal;
+            Vec4 viewDir = (view - centroid).Normal;
+            Vec4 halfDir = (lightDir + viewDir).Normal;
 
-
-
-            return new Vec4(color.x * angle, color.y * angle, color.z * angle, color.z);
-        }
-
-        public Vec4 GetDiffuseColor(Face face, Vec4 view)
-        {
-            Vec4 toLight = (position - face.SurfaceNormal).Normal;
             Vec4 normal = face.SurfaceNormal.Normal;
-            Vec4 temp = (toLight + view).Normal;
-            Vec4 half = new Vec4(temp.x / 2, temp.y / 2, temp.z / 2, temp.w / 2).Normal;
 
-            float angle = (toLight * normal) + (half * normal);
-            Console.WriteLine(angle);
-            angle = Clamp(angle, 0, 1);
-            Console.WriteLine(angle);
 
-            return new Vec4(color.x * angle, color.y * angle, color.z * angle, color.z);
+            float ambient = ka;
+            float diffuse = kd * (lightDir * face.SurfaceNormal.Normal);
+            float specular = ks * MathF.Pow(MathF.Max(normal * halfDir, 0), shininess);
+
+            float lightning = Clamp(ambient + diffuse + specular, 0, 1);
+
+            Vec4 output = color * lightning;
+
+            return output;
+
         }
 
     }
