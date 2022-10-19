@@ -686,12 +686,12 @@ namespace GraphicsProject
             131072});
             this.numericUpDownLightningX.Location = new System.Drawing.Point(3, 39);
             this.numericUpDownLightningX.Maximum = new decimal(new int[] {
-            20,
+            200,
             0,
             0,
             0});
             this.numericUpDownLightningX.Minimum = new decimal(new int[] {
-            20,
+            200,
             0,
             0,
             -2147483648});
@@ -712,12 +712,12 @@ namespace GraphicsProject
             131072});
             this.numericUpDownLightningY.Location = new System.Drawing.Point(76, 39);
             this.numericUpDownLightningY.Maximum = new decimal(new int[] {
-            20,
+            200,
             0,
             0,
             0});
             this.numericUpDownLightningY.Minimum = new decimal(new int[] {
-            20,
+            200,
             0,
             0,
             -2147483648});
@@ -751,7 +751,7 @@ namespace GraphicsProject
             this.numericUpDownLightningZ.Size = new System.Drawing.Size(68, 22);
             this.numericUpDownLightningZ.TabIndex = 3;
             this.numericUpDownLightningZ.Value = new decimal(new int[] {
-            4,
+            10,
             0,
             0,
             0});
