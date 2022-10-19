@@ -16,6 +16,7 @@ namespace GraphicsProject
         public static Func<float, float> Sin = angleR => (float)Math.Sin(angleR);
         public static Func<float, float, float> Min = (x, y) => (x < y) ? x : y;
         public static Func<float, float, float> Max = (x, y) => (x < y) ? y : x;
+        public static Func<float, float, float> Pow = (x, y) => (float)Math.Pow((double)x, (double)y);
     }
     public sealed class Utils
     {

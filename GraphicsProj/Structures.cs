@@ -132,6 +132,11 @@ namespace GraphicsProject
             return vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z + vec1.w * vec2.w;
         }
 
+        public static Vec4 operator *(Vec4 vec, float x)
+        {
+            return new Vec4(vec.x * x, vec.y * x, vec.z * x, vec.w);
+        }
+
         public float this[int i]
         {
             get
